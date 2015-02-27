@@ -2,7 +2,7 @@ package jentities
 
 import jentities.util.LanguageDatabase._
 
-case class Radical(name: String) extends Entity {
+trait KanjiEntry extends Entity {
   def vocabulary         = kanjidic
   lazy val decomposition = kradfile.find(_.startsWith(name))
 
@@ -22,3 +22,5 @@ case class Radical(name: String) extends Entity {
   }.getOrElse(Nil)
 
 }
+
+case class Radical(name: String) extends KanjiEntry

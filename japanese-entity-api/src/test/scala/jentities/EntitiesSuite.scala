@@ -18,6 +18,10 @@ class LanguageDatabaseSpec extends FlatSpec with Matchers with LanguageDatabaseS
     Radical("并").elements should contain theSameElementsInOrderAs "ノ十一干二".toRadicals
   }
 
+  "Kanji" should "have a list of readings" in {
+    Kanji("闇").readings should contain allOf ("アン", "オン", "やみ", "くら.い")
+  }
+
 }
 
 trait LanguageDatabaseSpecHelpers {
