@@ -18,8 +18,9 @@ trait KanjiEntry extends Entity {
     .drop(2)
     .diff(name)
     .map     {r => Radical(r)}
-    .flatMap {r => r.elements :+ r}
   }.getOrElse(Nil)
+
+  def allElements: Seq[Radical] = elements.flatMap {r => r.allElements :+ r}.distinct
 
 }
 

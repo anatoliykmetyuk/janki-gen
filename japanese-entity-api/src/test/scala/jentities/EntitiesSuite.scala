@@ -14,8 +14,12 @@ class LanguageDatabaseSpec extends FlatSpec with Matchers with LanguageDatabaseS
     Radical("小").diagram.get should include ("小")
   }
 
-  it should "have a correct decomposition - with all the transitive decompositions, in correct order" in {
-    Radical("并").elements should contain theSameElementsInOrderAs "ノ十一干二".toRadicals
+  it should "have a standard decomposition - with only the first-level elements" in {
+    Radical("并").elements should contain theSameElementsInOrderAs "ノ干二".toRadicals
+  }
+
+  it should "have a full decomposition - with all the transitive decompositions, in correct order" in {
+    Radical("并").allElements should contain theSameElementsInOrderAs "ノ十一干二".toRadicals
   }
 
 
