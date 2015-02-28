@@ -18,8 +18,34 @@ class LanguageDatabaseSpec extends FlatSpec with Matchers with LanguageDatabaseS
     Radical("并").elements should contain theSameElementsInOrderAs "ノ十一干二".toRadicals
   }
 
+
   "Kanji" should "have a list of readings" in {
     Kanji("闇").readings should contain allOf ("アン", "オン", "やみ", "くら.い")
+  }
+
+
+  "Vocabulary" should "have a reading" in {
+    Vocabulary("夢見る").reading shouldBe Some("ゆめみる")
+  }
+
+  it should "have a list of meanings" in {
+    Vocabulary("夢判断").meanings should contain allOf(
+      "(n) (1) interpretation of dreams/dream reading/oneirocriticism/oneiroscopy",
+      "(2) The Interpretation of Dreams (book by Sigmund Freud, 1900)"
+    )
+
+    Vocabulary("蜜").meanings should contain allOf(
+      "(n) (1) nectar",
+      "(2) honey",
+      "(3) honeydew",
+      "(4) treacle/molasses",
+      "(5) sorbitol (when visible as dark patches inside an apple)"
+    )
+  }
+
+  it should "get decomposed to Kanjis properly" in {
+    Vocabulary("夢のまた夢").elements should contain theSameElementsInOrderAs Seq(Kanji("夢"))
+    Vocabulary("夢見る").elements should contain theSameElementsInOrderAs Seq(Kanji("夢"), Kanji("見"))
   }
 
 }

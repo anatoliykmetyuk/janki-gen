@@ -1,6 +1,5 @@
 package jentities
 
-import jentities.util.LanguageDatabase._
 import jentities.util.JCharactersUtils._
 
 case class Kanji(name: String) extends KanjiEntry {
