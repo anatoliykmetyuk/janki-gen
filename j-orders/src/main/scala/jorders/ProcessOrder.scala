@@ -13,7 +13,7 @@ import generators._
  */
 object ProcessOrder {
 
-  def apply(payload: Seq[String], order: Map[String, String]) {
+  def apply(payload: Seq[String], order: Map[String, String]): Map[String, Any] = {
     val dPayload = payload.map {e => Vocabulary(e)}   // Domain payload
 
     var result = Map[String, Any]()
@@ -28,6 +28,26 @@ object ProcessOrder {
       result += key -> noteGenerators(key).generate(dPayload, order(key))
 
     for (k <- order.keys) generateOrder(k)
+    
+    result
   }
+
+}
+
+object Sample {
+  import Constants.Fields._
+
+  val order = Map(
+    VOCABULARY -> s"$I $M $R $E",
+    KANJI      -> s"$I $M $R $E $Di",
+    RADICALS   -> s"$I $M $Di",
+    MEDIA      -> ""
+  )
+
+  val words = Seq(
+    "女の子",
+    "少女",
+    "子供"
+  )
 
 }

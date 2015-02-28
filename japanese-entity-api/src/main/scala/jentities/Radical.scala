@@ -16,8 +16,9 @@ trait KanjiEntry extends Entity {
 
   def elements: Seq[Radical] = decomposition.map {_
     .split(" ")
-    .toSeq.distinct
+    .toSeq
     .drop(2)
+    .distinct
     .map {r => Radical(r)}
   }.getOrElse(Nil)
 
@@ -30,8 +31,10 @@ trait KanjiEntry extends Entity {
       else ets.flatMap {e => expand(e.elements, level + 1, limit) :+ e}.distinct
 
     expand(elements, 0, 10)
-    // elements.flatMap {r => r.allElements :+ r}.distinct
   }
 }
 
-case class Radical(name: String) extends KanjiEntry
+case class Radical(name: String) extends KanjiEntry {
+  // Don't include this in the elements output
+  override def elements = super.elements.diff(Seq(this))
+}

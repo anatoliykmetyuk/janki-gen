@@ -26,3 +26,10 @@ lazy val jentities = (project in file("japanese-entity-api"))
 lazy val jorders = (project in file("j-orders"))
   .dependsOn(jentities)
   .settings(commonSettings: _*)
+  .settings(
+    initialCommands := """
+      |import jorders._
+      |import jentities._
+      |import Sample._
+    """.stripMargin
+  )
