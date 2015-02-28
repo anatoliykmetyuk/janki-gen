@@ -60,6 +60,32 @@ object LanguageDatabase extends LanguageDatabaseAccess with TarAccess {
   def kradfile = gzipIterator("kradfile-u.gz", "UTF-8"      )
   def diagrams = tgz         ("colorized-kanji-contrast.tgz")
 
+  lazy val edictMap: Map[String, String] = edict
+    .drop(1)
+    .map {x => x.takeWhile(c => c != ' ' && c != ';' && c != '(') -> x}
+    .toMap
+
+  lazy val kanjidicMap: Map[String, String] = kanjidic
+    .drop(1)
+    .map {x => x.takeWhile(_ != ' ') -> x}
+    .toMap
+
+  lazy val kradfileMap: Map[String, String] = kradfile
+    .dropWhile(_.head == '#')
+    .map {x => x.head.toString -> x}
+    .toMap
+
+  lazy val diagramsMap: Map[String, String] = {
+    val tis = diagrams
+    tis.getNextEntry
+
+    var result = Map[String, String]()
+    while (tis.getNextEntry != null) result +=
+      tis.getCurrentEntry.getName.dropWhile(_ != '/').drop(1).dropRight(".svg".size) -> IOUtils.toString(tis)
+
+    result
+  }
+
   /**
    * Reads an SVG diagram of the given kanji.
    */

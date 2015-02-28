@@ -20,6 +20,7 @@ lazy val jentities = (project in file("japanese-entity-api"))
   .settings(
     initialCommands := """
       |import jentities._
+      |import jentities.util.LanguageDatabase._
     """.stripMargin
   )
 
