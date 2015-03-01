@@ -3,14 +3,14 @@ package jentities
 import jentities.util.LanguageDatabase._
 
 trait KanjiEntry extends Entity {
-  def vocabulary         = kanjidicMap
-  lazy val decomposition = kradfileMap.get(name)
+  def vocabulary         = kanjidic
+  lazy val decomposition = kradfile.get(name)
 
   def meanings: Seq[String] = vocabEntry.map {entry =>
     """\{([^\{\}]+)\}""".r.findAllMatchIn(entry).map(_.group(1)).toList
   }.getOrElse(Nil)
 
-  def diagram: Option[String] = diagramsMap.get(name)
+  def diagram: Option[String] = diagrams.get(name)
 
   def utfCode: String = (name.head | 0x1000000).toHexString.drop(1)
 

@@ -4,6 +4,7 @@ import org.scalatest._
 
 class JCharactersUtilsSpec extends FlatSpec with Matchers with Inspectors {
   import JCharactersUtils._
+  import LanguageDatabase._
 
   "JCharactersUtils" should "determine Hiragana correctly" in {
     isHiragana('ひ') shouldBe true
@@ -18,9 +19,7 @@ class JCharactersUtilsSpec extends FlatSpec with Matchers with Inspectors {
   }
 
   it should "determine Kanji correctly" in {
-    forAll {
-      LanguageDatabase.kanjidic.map(_.head).toSeq.diff(Seq('#')).mkString
-    } {c => isKanji(c) shouldBe true}
+    forAll (kanjidic.keys.mkString) {c => isKanji(c) shouldBe true}
   }
 
 }
