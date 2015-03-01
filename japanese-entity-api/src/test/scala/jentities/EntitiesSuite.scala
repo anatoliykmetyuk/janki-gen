@@ -52,6 +52,12 @@ class LanguageDatabaseSpec extends FlatSpec with Matchers with LanguageDatabaseS
     Vocabulary("夢見る").elements should contain theSameElementsInOrderAs Seq(Kanji("夢"), Kanji("見"))
   }
 
+  it should "also work with kana-only words" in {
+    val v = Vocabulary("あたふた")
+    v.elements shouldBe 'empty
+    v.meanings should contain only ("(adv-to) (on-mim) in a hurry/hastily/in feverish haste")
+  }
+
 }
 
 trait LanguageDatabaseSpecHelpers {
