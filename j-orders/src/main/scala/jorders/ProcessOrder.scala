@@ -52,7 +52,7 @@ object Sample {
     RADICALS   -> s"$I $M $Di",
     MEDIA      -> "",
     EXCLUDE    -> List(
-      Kanji("女")
+      // Kanji("女")
     )
   )
 

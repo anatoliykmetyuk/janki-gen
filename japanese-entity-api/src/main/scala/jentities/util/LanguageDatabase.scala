@@ -56,7 +56,15 @@ object LanguageDatabase extends LanguageDatabaseAccess {
     .toMap
   }
 
-  lazy val kanjidic: Map[String, String] = withGzipIterator("kanjidic.gz") {_
+  lazy val kanjidic = kanjidic1 ++ kanjidic2
+
+  lazy val kanjidic1: Map[String, String] = withGzipIterator("kanjidic.gz") {_
+    .drop(1)
+    .map {x => x.takeWhile(_ != ' ') -> x}
+    .toMap
+  }
+
+  lazy val kanjidic2: Map[String, String] = withGzipIterator("kanjd212.gz") {_
     .drop(1)
     .map {x => x.takeWhile(_ != ' ') -> x}
     .toMap
