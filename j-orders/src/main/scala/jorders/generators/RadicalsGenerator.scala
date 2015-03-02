@@ -20,5 +20,9 @@ trait RadicalsGenerator extends NoteGenerator {
 object RadicalsGenerator extends RadicalsGenerator {
   type T = Radical
 
-  def extract(e: Vocabulary) = e.elements.flatMap(_.allElements)
+  def extract(e: Entity) = e match {
+    case e: Vocabulary => e.elements.flatMap(_.allElements)
+    case e: Kanji      => e.elements
+    case e: Radical    => Seq(e)
+  }
 }

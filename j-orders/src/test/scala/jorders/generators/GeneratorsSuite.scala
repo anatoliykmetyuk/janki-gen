@@ -23,6 +23,10 @@ class GeneratorsSuite extends FlatSpec with Matchers with GeneratorsData {
     )
   }
 
+  it should "also accept kanjis in its payload apart from the words" in {
+    KanjiGenerator.generate(Seq(Kanji("硬")), s"$I $M $Di") should contain ("硬\tstiff; hard\t<img src=\"00786c.svg\"/>")
+  }
+
   "Radicals generator" should "work" in {
     RadicalsGenerator.generate(sampleVocab, s"$I $M") should contain allOf (
       "一\tone; one radical (no.1)",
@@ -30,6 +34,14 @@ class GeneratorsSuite extends FlatSpec with Matchers with GeneratorsData {
       "石\tstone",
       "日\tday; sun; Japan; counter for days"
     )
+  }
+
+  it should "also accept radicals in its payload" in {
+    RadicalsGenerator.generate(Seq(Radical("口")), s"$I $M") should contain ("口\tmouth")    
+  }
+
+  it should "also accept kanjis in its payload" in {
+    RadicalsGenerator.generate(Seq(Kanji("一")), s"$I $M") should contain ("一\tone; one radical (no.1)")
   }
 
   "Media generator" should "work" in {

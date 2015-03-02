@@ -12,14 +12,14 @@ trait NoteGenerator extends Generator[Seq[String]] {
 
   val separator: String = "\t"
 
-  def extract(x: Vocabulary): Seq[T]
+  def extract(x: Entity): Seq[T]
 
   /**
    * Payload is a vocabulary to work with, order details is a
    * specifically formated String. It is a space-separated sequence of
    * tokes, each token denotes a field of the resulting note.
    */
-  def generate(payload: Seq[Vocabulary], orderDetails: String): Seq[String] =
+  def generate(payload: Seq[Entity], orderDetails: String): Seq[String] =
     payload.flatMap(extract).filter(_.found).map {processOne(_, orderDetails.split(" "))}
 
   /**

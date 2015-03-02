@@ -11,5 +11,9 @@ object KanjiGenerator extends RadicalsGenerator {
     R -> {v => v.readings.mkString("; ")}
   )
 
-  def extract(e: Vocabulary) = e.elements
+  def extract(e: Entity) = e match {
+    case e: Vocabulary => e.elements
+    case e: Kanji      => Seq(e)
+    case _             => Nil
+  }
 }

@@ -14,7 +14,11 @@ import generators._
 object ProcessOrder {
 
   def apply(payload: Seq[String], order: Map[String, String]): Map[String, Any] = {
-    val dPayload = payload.map {e => Vocabulary(e)}   // Domain payload
+    val dPayload = payload.map {e =>
+           if (Vocabulary(e).found) Vocabulary(e)
+      else if (Kanji     (e).found) Kanji     (e)
+      else                          Vocabulary(e)
+    }   // Domain payload
 
     var result = Map[String, Any]()
 
