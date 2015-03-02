@@ -18,11 +18,6 @@ case class Vocabulary(name: String) extends Entity {
       .toSeq
   }.getOrElse(Nil)
 
-  def elements: Seq[Kanji] = vocabEntry.map {_.toSeq
-    .takeWhile {c => isKanji(c) || isKana(c)}
-    .filter    {c => isKanji(c)}
-    .distinct
-    .map       {c => Kanji(c.toString)}
-    }.getOrElse(Nil)
+  def elements: Seq[Kanji] = name.filter(isKanji).distinct.map {c => Kanji(c.toString)}
   
 }
