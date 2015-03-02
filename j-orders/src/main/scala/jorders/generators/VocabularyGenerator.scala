@@ -14,7 +14,7 @@ object VocabularyGenerator extends NoteGenerator {
     E -> {v => v.elements.map(_.name).mkString}
   )
 
-  def extract(e: Entity) = e match {
+  def extract(e: Entity, exclude: Seq[Entity]) = e match {
     case e: Vocabulary => Seq(e)
     case _             => Nil
   }

@@ -10,6 +10,7 @@ object Constants {
   val KANJI      = "kanji"
   val RADICALS   = "radicals"
   val MEDIA      = "media"
+  val EXCLUDE    = "exclude"
 
   /** Fields to specify the details of the orders */
   object Fields {

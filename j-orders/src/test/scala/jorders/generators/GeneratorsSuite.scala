@@ -48,4 +48,8 @@ class GeneratorsSuite extends FlatSpec with Matchers with GeneratorsData {
     MediaGenerator.generate(Seq(Vocabulary("一つ")), "").contains("004e00.svg") shouldBe true
   }
 
+  "Exclusion" should "work" in {
+    VocabularyGenerator.generate(sampleVocab, s"$I $M $R $E", Seq(Vocabulary("硬変"))) should not contain ("硬変\t(n,vs) cirrhosis\tこうへん\t硬変")
+  }
+
 }

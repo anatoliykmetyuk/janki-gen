@@ -7,6 +7,6 @@ import jentities._
  */
 trait Generator[+T] {
 
-  def generate(payload: Seq[Entity], orderDetails: String): T
+  def generate(payload: Seq[Entity], orderDetails: String, exclude: Seq[Entity] = Nil): T
 
 }

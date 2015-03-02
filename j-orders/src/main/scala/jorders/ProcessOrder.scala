@@ -13,7 +13,7 @@ import generators._
  */
 object ProcessOrder {
 
-  def apply(payload: Seq[String], order: Map[String, String]): Map[String, Any] = {
+  def apply(payload: Seq[String], order: Map[String, Any]): Map[String, Any] = {
     val dPayload = payload.map {e =>
            if (Vocabulary(e).found) Vocabulary(e)
       else if (Kanji     (e).found) Kanji     (e)
@@ -28,8 +28,12 @@ object ProcessOrder {
       RADICALS   -> RadicalsGenerator,
       MEDIA      -> MediaGenerator
     )
-    def generateOrder(key: String) =
-      result += key -> noteGenerators(key).generate(dPayload, order(key))
+    def generateOrder(key: String) = if (noteGenerators contains key)
+      result += key -> noteGenerators(key).generate (
+        dPayload,
+        order(key).toString,
+        order.get(EXCLUDE).map(_.asInstanceOf[Seq[Entity]]).getOrElse(Nil)
+      )
 
     for (k <- order.keys) generateOrder(k)
     
@@ -45,7 +49,10 @@ object Sample {
     VOCABULARY -> s"$I $M $R $E",
     KANJI      -> s"$I $M $R $E $Di",
     RADICALS   -> s"$I $M $Di",
-    MEDIA      -> ""
+    MEDIA      -> "",
+    EXCLUDE    -> List(
+      Kanji("女")
+    )
   )
 
   val words = Seq(

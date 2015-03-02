@@ -20,8 +20,11 @@ trait RadicalsGenerator extends NoteGenerator {
 object RadicalsGenerator extends RadicalsGenerator {
   type T = Radical
 
-  def extract(e: Entity) = e match {
-    case e: Vocabulary => e.elements.flatMap(_.allElements)
+  def extract(e: Entity, exclude: Seq[Entity]) = e match {
+    case e: Vocabulary => e
+      .elements
+      .distinct.diff(exclude)   // The "blind spot": the transitive elements couldn't be filtered from the NoteGenerator
+      .flatMap(_.allElements)
     case e: Kanji      => e.elements
     case e: Radical    => Seq(e)
   }
