@@ -61,4 +61,30 @@ object Sample {
     "子供"
   )
 
+  val words2 = Seq(
+    "太陽",
+    "昨日",
+    "眩しい",
+    "照りつける",
+    "始める",
+    "真っ白",
+    "今すぐ",
+    "着替える",
+    "君",
+    "誘う",
+    "海沿い",
+    "国道",
+    "まだまだ",
+    "空く",
+    "乗り",
+    "潮風",
+    "追いかける",
+    "誰",
+    "早く",
+    "夏",
+    "探す"
+  )
+
+  def doo(m: Map[String, Any], key: String) = m(key).asInstanceOf[Seq[String]].mkString("\n")
+
 }

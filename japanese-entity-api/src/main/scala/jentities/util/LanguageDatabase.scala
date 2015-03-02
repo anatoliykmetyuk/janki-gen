@@ -51,7 +51,8 @@ object LanguageDatabase extends LanguageDatabaseAccess {
 
   lazy val edict: Map[String, String] = withGzipIterator("edict2.gz") {_
     .drop(1)
-    .map {x => x.takeWhile(c => c != ' ' && c != ';' && c != '(') -> x}
+    .map     {x => x.takeWhile(_ != ' ') -> x}
+    .flatMap {case (k, v) => k.split(";").map(_.takeWhile(_ != '(') -> v)}  // Handling cases like 硝子体;ガラス体 - SEMICOLON!!!
     .toMap
   }
 

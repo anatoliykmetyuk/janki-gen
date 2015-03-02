@@ -58,6 +58,10 @@ class LanguageDatabaseSpec extends FlatSpec with Matchers with LanguageDatabaseS
     v.meanings should contain only ("(adv-to) (on-mim) in a hurry/hastily/in feverish haste")
   }
 
+  it should "work in special cases" in {
+    Vocabulary("照りつける") shouldBe 'found
+  }
+
 }
 
 trait LanguageDatabaseSpecHelpers {

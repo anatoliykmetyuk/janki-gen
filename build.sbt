@@ -32,5 +32,6 @@ lazy val jorders = (project in file("j-orders"))
       |import jorders._
       |import jentities._
       |import Sample._
+      |import Constants._
     """.stripMargin
   )
