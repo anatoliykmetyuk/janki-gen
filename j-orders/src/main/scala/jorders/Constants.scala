@@ -6,9 +6,9 @@ package jorders
  */
 object Constants {
 
-  val VOCABULARY = "vocabulary"
-  val KANJI      = "kanji"
-  val RADICALS   = "radicals"
+  val VOCABULARY = "vocabulary.txt"
+  val KANJI      = "kanji.txt"
+  val RADICALS   = "radicals.txt"
   val MEDIA      = "media"
   val EXCLUDE    = "exclude"
 
