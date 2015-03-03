@@ -7,9 +7,11 @@ case class Vocabulary(name: String) extends Entity {
   type DictEntryForm = String
   def vocabulary     = edict
 
-  def reading: Option[String] = vocabEntry.flatMap {entry =>
-    """\[([^\[\]]+)\]""".r.findFirstMatchIn(entry).map(_.group(1))
-  }
+  def reading: Option[String] =
+    if (name.forall(isKana)) Some(name)
+    else vocabEntry.flatMap {entry =>
+      """\[([^\[\]]+)\]""".r.findFirstMatchIn(entry).map(_.group(1))
+    }
 
   def meanings: Seq[String] = vocabEntry.map {entry =>
     entry

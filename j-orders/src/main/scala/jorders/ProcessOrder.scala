@@ -20,6 +20,10 @@ object ProcessOrder {
       else                          Vocabulary(e)
     }   // Domain payload
 
+    processEntities(dPayload, order)
+  }
+
+  def processEntities(payload: Seq[Entity], order: Map[String, Any]): Map[String, Any] = {
     var result = Map[String, Any]()
 
     val noteGenerators = Map(
@@ -30,7 +34,7 @@ object ProcessOrder {
     )
     def generateOrder(key: String) = if (noteGenerators contains key)
       result += key -> noteGenerators(key).generate (
-        dPayload,
+        payload,
         order(key).toString,
         order.get(EXCLUDE).map(_.asInstanceOf[Seq[Entity]]).getOrElse(Nil)
       )

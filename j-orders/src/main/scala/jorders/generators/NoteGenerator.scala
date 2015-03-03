@@ -24,9 +24,10 @@ trait NoteGenerator extends Generator[Seq[String]] {
   def generate(payload: Seq[Entity], orderDetails: String, exclude: Seq[Entity] = Nil): Seq[String] =
     payload
       .distinct.diff (exclude)
+      .filter(_.found)
       .flatMap       (extract(_, exclude))
       .distinct.diff (exclude)  // Same operation twice, to prevent transitive elements of the excluded elements from generation
-      .filter        (_.found)
+      .filter(_.found)
       .map           {processOne(_, orderDetails.split(" "))}
 
   /**
