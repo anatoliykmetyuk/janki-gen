@@ -16,22 +16,25 @@ lazy val commonSettings = Seq(
 )
 
 lazy val jentities = (project in file("japanese-entity-api"))
-  .settings(commonSettings: _*)
-  .settings(
-    initialCommands := """
-      |import jentities._
-      |import jentities.util.LanguageDatabase._
-    """.stripMargin
+    .settings(commonSettings: _*)
+    .settings(
+      initialCommands := """
+        |import jentities._
+        |import jentities.util.LanguageDatabase._
+        |val kanjidic2file = "/Users/anatolii/Projects/janki-gen/japanese-entity-api/src/main/resources/language-data/kanjidic2.xml"
+      """.stripMargin,
+
+    libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"
   )
 
 lazy val jorders = (project in file("j-orders"))
-  .dependsOn(jentities)
-  .settings(commonSettings: _*)
-  .settings(
-    initialCommands := """
-      |import jorders._
-      |import jentities._
-      |import Sample._
-      |import Constants._
-    """.stripMargin
+    .dependsOn(jentities)
+    .settings(commonSettings: _*)
+    .settings(
+      initialCommands := """
+        |import jorders._
+        |import jentities._
+        |import Sample._
+        |import Constants._
+      """.stripMargin
   )

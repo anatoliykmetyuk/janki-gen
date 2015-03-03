@@ -4,7 +4,8 @@ import jentities.util.LanguageDatabase._
 import jentities.util.JCharactersUtils._
 
 case class Vocabulary(name: String) extends Entity {
-  def vocabulary = edict
+  type DictEntryForm = String
+  def vocabulary     = edict
 
   def reading: Option[String] = vocabEntry.flatMap {entry =>
     """\[([^\[\]]+)\]""".r.findFirstMatchIn(entry).map(_.group(1))

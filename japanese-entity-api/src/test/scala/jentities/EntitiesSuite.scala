@@ -2,7 +2,7 @@ package jentities
 
 import org.scalatest._
 
-class LanguageDatabaseSpec extends FlatSpec with Matchers with LanguageDatabaseSpecHelpers {
+class EntitiesSpec extends FlatSpec with Matchers with LanguageDatabaseSpecHelpers {
 
   "Radical" should "have a defined meanings" in {
     Radical("小").meanings should contain allOf ("little", "small")

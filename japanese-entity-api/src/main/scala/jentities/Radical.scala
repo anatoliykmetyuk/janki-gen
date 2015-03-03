@@ -1,13 +1,17 @@
 package jentities
 
+import scala.xml._
+
 import jentities.util.LanguageDatabase._
 
 trait KanjiEntry extends Entity {
+  type DictEntryForm     = Node
   def vocabulary         = kanjidic
   lazy val decomposition = kradfile.get(name)
 
-  def meanings: Seq[String] = vocabEntry.map {entry =>
-    """\{([^\{\}]+)\}""".r.findAllMatchIn(entry).map(_.group(1)).toList
+  def meanings: Seq[String] = vocabEntry.map {n => (n \\ "meaning")
+    .filter {_.attributes.isEmpty}
+    .map    {_.text}
   }.getOrElse(Nil)
 
   def diagram: Option[String] = diagrams.get(name)
