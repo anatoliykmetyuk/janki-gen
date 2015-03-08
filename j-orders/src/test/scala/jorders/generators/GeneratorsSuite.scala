@@ -18,13 +18,13 @@ class GeneratorsSuite extends FlatSpec with Matchers with GeneratorsData {
 
   "Kanji generator" should "work" in {
     KanjiGenerator.generate(sampleVocab, s"$I $M $Di") should contain allOf (
-      "硬\tstiff; hard\t<img src=\"00786c.svg\"/>",
-      "派\tfaction; group; party; clique; sect; school\t<img src=\"006d3e.svg\"/>"
+      "硬\tstiff; hard\t<img src=\"786c.svg\"/>",
+      "派\tfaction; group; party; clique; sect; school\t<img src=\"6d3e.svg\"/>"
     )
   }
 
   it should "also accept kanjis in its payload apart from the words" in {
-    KanjiGenerator.generate(Seq(Kanji("硬")), s"$I $M $Di") should contain ("硬\tstiff; hard\t<img src=\"00786c.svg\"/>")
+    KanjiGenerator.generate(Seq(Kanji("硬")), s"$I $M $Di") should contain ("硬\tstiff; hard\t<img src=\"786c.svg\"/>")
   }
 
   "Radicals generator" should "work" in {
@@ -45,7 +45,7 @@ class GeneratorsSuite extends FlatSpec with Matchers with GeneratorsData {
   }
 
   "Media generator" should "work" in {
-    MediaGenerator.generate(Seq(Vocabulary("一つ")), "").contains("004e00.svg") shouldBe true
+    MediaGenerator.generate(Seq(Vocabulary("一つ")), "").contains("4e00.svg") shouldBe true
   }
 
   "Exclusion" should "work" in {

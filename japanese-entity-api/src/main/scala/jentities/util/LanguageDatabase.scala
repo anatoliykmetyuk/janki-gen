@@ -84,7 +84,7 @@ object LanguageDatabase extends LanguageDatabaseAccess {
 
   lazy val kradfile: Map[String, String] = withGzipIterator("kradfile-u.gz", "UTF-8") {_
     .dropWhile(_.head == '#')
-    .map {x => x.head.toString -> x}
+    .map {x => x.takeWhile(_ != ' ') -> x}
     .toMap
   }
 

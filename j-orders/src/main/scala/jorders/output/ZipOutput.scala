@@ -15,7 +15,7 @@ object ZipOutput {
 
   def writeMap(map: Map[String, Any], stream: ZipArchiveOutputStream, prefix: String = "") {
     // Turn lists into strings
-    val refinedMap = map.map {case (k, l: List[String]) => k -> l.mkString("\n"); case x => x}
+    val refinedMap = map.map {case (k, l: Seq[String]) => k -> l.mkString("\n"); case x => x}
     for ((name, content) <- refinedMap) content match {
       case str   : String           => writeText(str   , stream, s"$prefix$name")
       case folder: Map[String, Any] => writeMap (folder, stream, s"$prefix$name/")

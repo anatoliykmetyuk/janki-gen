@@ -37,6 +37,7 @@ lazy val jorders = (project in file("j-orders"))
         |import jentities._
         |import Sample._
         |import Constants._
+        |import Fields._
         |import jorders.output._
       """.stripMargin
     )
@@ -55,3 +56,7 @@ lazy val textDecompose = (project in file("j-text"))
       |import Sample._
     """.stripMargin
   )
+
+// lazy val webapp = (project in file("janki-webapp"))
+//   .dependsOn(jentities, jorders, textDecompose)
+//   .settings(commonSettings: _*)

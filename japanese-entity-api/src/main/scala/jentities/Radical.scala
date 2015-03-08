@@ -16,7 +16,8 @@ trait KanjiEntry extends Entity {
 
   def diagram: Option[String] = diagrams.get(name)
 
-  def utfCode: String = (name.head | 0x1000000).toHexString.drop(1)
+  def utfCode: String = name.flatMap {c => (c | 0x10000).toHexString.drop(1)}
+  // (name.head | 0x1000000).toHexString.drop(1)
 
   def elements: Seq[Radical] = decomposition.map {_
     .split(" ")
