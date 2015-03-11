@@ -4,6 +4,34 @@ val sbtVer   = "0.13.7"
 scalaVersion := scalaVer
 sbtVersion   := sbtVer
 
+lazy val defaultPom = (
+  <url>https://github.com/anatoliykmetyuk/janki-gen</url>
+  <licenses>
+    <license>
+      <name>BSD-style</name>
+      <url>http://www.opensource.org/licenses/bsd-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>git@github.com/anatoliykmetyuk/janki-gen.git</url>
+    <connection>scm:git:git@github.com/anatoliykmetyuk/janki-gen.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>anatoliykmetyuk</id>
+      <name>Anatoliy Kmetyuk</name>
+    </developer>
+  </developers>
+)
+
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
 
 lazy val commonSettings = Seq(
   scalaVersion := scalaVer,
@@ -13,12 +41,31 @@ lazy val commonSettings = Seq(
     "commons-io"         %  "commons-io"       % "2.4",
     "org.apache.commons" %  "commons-compress" % "1.9",
     "org.scalatest"      %% "scalatest"        % "2.2.4" % "test"
-  )
+  ),
+
+  organization := "io.github.anki-japan",
+  version      := "1.0",
+
+  publishMavenStyle := true,
+
+  publishTo := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value)
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+  },
+
+  publishArtifact in Test := false,
+
+  pomExtra := defaultPom
 )
 
 lazy val jentities = (project in file("japanese-entity-api"))
     .settings(commonSettings: _*)
     .settings(
+      name := "jentities",
+
       initialCommands := """
         |import jentities._
         |import jentities.util.LanguageDatabase._
@@ -32,6 +79,8 @@ lazy val jorders = (project in file("j-orders"))
     .dependsOn(jentities)
     .settings(commonSettings: _*)
     .settings(
+      name := "jorders",
+
       initialCommands := """
         |import jorders._
         |import jentities._
@@ -46,6 +95,8 @@ lazy val textDecompose = (project in file("j-text"))
   .dependsOn(jentities, jorders)
   .settings(commonSettings: _*)
   .settings(
+    name := "jtext",
+
     resolvers += "Atilika Open Source repository" at "http://www.atilika.org/nexus/content/repositories/atilika",
     libraryDependencies += "org.atilika.kuromoji" % "kuromoji" % "0.7.7",
 
