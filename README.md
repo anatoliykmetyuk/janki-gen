@@ -18,6 +18,7 @@ For more information about the **programmatic usage**, see the API.
 Powered By
 ==========
 JAnki uses the following projects:
+- [Kuromoji](http://www.atilika.org/)
 - [Edict](http://www.edrdg.org/jmdict/edict.html)
 - [Kanjidic2](http://www.edrdg.org/kanjidic/kanjd2index.html)
 - [Kradfile](http://www.kanjicafe.com/kradfile_license.htm)
