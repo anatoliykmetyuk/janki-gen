@@ -17,6 +17,9 @@ For more information about the **programmatic usage**, see the API.
 
 Example
 =======
+You can add the library to the project as a Maven dependency as follows:
+```The library is not yet in the Maven, coming soon!```
+
 You can use the library as follows:
 ```scala
 // Necessary imports
