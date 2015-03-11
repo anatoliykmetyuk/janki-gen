@@ -19,6 +19,10 @@ object TextTokenizer {
     "連体詞"   // れんたいし   - pre-noun adjectival
   )
 
+  /**
+   * Path an arbitrary Japanese text string to this method
+   * and it will extract all the words from it.
+   */
   def apply(text: String): Seq[Vocabulary] = {
     val tokenizer   = Tokenizer.builder.build()
     val refinedText = text.filter(_ != '\n')

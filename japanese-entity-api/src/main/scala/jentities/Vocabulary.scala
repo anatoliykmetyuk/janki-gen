@@ -3,16 +3,25 @@ package jentities
 import jentities.util.LanguageDatabase._
 import jentities.util.JCharactersUtils._
 
+/**
+ * A single Japanese word.
+ */
 case class Vocabulary(name: String) extends Entity {
   type DictEntryForm = String
   def vocabulary     = edict
 
+  /**
+   * The reading of this word.
+   */
   def reading: Option[String] =
     if (name.forall(isKana)) Some(name)
     else vocabEntry.flatMap {entry =>
       """\[([^\[\]]+)\]""".r.findFirstMatchIn(entry).map(_.group(1))
     }
 
+  /**
+   * English translations of this word.
+   */
   def meanings: Seq[String] = vocabEntry.map {entry =>
     entry
       .dropWhile(_ != '/')                    // Drop Kanji and Kana readings
@@ -21,6 +30,9 @@ case class Vocabulary(name: String) extends Entity {
       .toSeq
   }.getOrElse(Nil)
 
+  /**
+   * Kanjis this word is composed of.
+   */
   def elements: Seq[Kanji] = name.filter(isKanji).distinct.map {c => Kanji(c.toString)}
   
 }

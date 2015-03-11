@@ -9,10 +9,15 @@ import generators._
  * Processes the orders for notes generation.
  * Results in the generation of a Map, with the Constants object.
  * Think of it as of a directory with files. It is supposed
- * to be converted into it anyway.
+ * to be converted into it.
+ * @see Constants for more information on composing orders.
  */
 object ProcessOrder {
 
+  /**
+   * @param payload a sequence of words or kanjis to be processed.
+   * @param order an order.
+   */
   def apply(payload: Seq[String], order: Map[String, Any]): Map[String, Any] = {
     val dPayload = payload.map {e =>
            if (Vocabulary(e).found) Vocabulary(e)
@@ -23,6 +28,10 @@ object ProcessOrder {
     processEntities(dPayload, order)
   }
 
+  /**
+   * @param payload a sequence of entities to be processed.
+   * @param order an order.
+   */
   def processEntities(payload: Seq[Entity], order: Map[String, Any]): Map[String, Any] = {
     var result = Map[String, Any]()
 
@@ -46,7 +55,7 @@ object ProcessOrder {
 
 }
 
-// For testing purposes
+/** For testing purposes */
 object Sample {
   import Constants.Fields._
 
