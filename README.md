@@ -14,3 +14,12 @@ The **recommended approach for learning** is as follows:
  4. Once remembered, go to the original text and read it. You already know the words used there, but you don't know the grammar - so go ahead and study any new grammar you encounter.
 
 For more information about the **programmatic usage**, see the API.
+
+Powered By
+==========
+JAnki uses the following projects:
+- [Edict](http://www.edrdg.org/jmdict/edict.html)
+- [Kanjidic](http://kanjidic.com/)
+- [Kradfile](http://www.kanjicafe.com/kradfile_license.htm)
+- [Kanji Colorize](https://github.com/cayennes/kanji-colorize)
+Thank you!
