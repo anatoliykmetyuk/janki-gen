@@ -2,12 +2,14 @@ package jentities
 
 import scala.xml._
 
-import jentities.util.LanguageDatabase._
+import jentities.util.LanguageDatabase
 
 /**
  * A base trait for Kanjis and Radicals.
  */
 trait KanjiEntry extends Entity {
+  import languageDatabase._
+
   type DictEntryForm     = Node
   def vocabulary         = kanjidic
   lazy val decomposition = kradfile.get(name)
@@ -59,7 +61,7 @@ trait KanjiEntry extends Entity {
 /**
  * A Radical.
  */
-case class Radical(name: String) extends KanjiEntry {
+case class Radical(name: String)(implicit val languageDatabase: LanguageDatabase) extends KanjiEntry {
   // Don't include this in the elements output
   override def elements = super.elements.diff(Seq(this))
 }

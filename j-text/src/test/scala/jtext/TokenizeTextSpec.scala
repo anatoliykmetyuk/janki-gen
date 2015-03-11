@@ -3,6 +3,8 @@ package jtext
 import org.scalatest._
 import jentities._
 
+import jentities.util.Implicits.localDatabase
+
 class TokenizeTextSpec extends FlatSpec with Matchers with TokenizeTextSpecHelpers {
 
   "Text tokenizer" should "tokenize text correctly" in {

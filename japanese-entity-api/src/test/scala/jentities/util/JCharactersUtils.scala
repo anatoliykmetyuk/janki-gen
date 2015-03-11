@@ -4,7 +4,6 @@ import org.scalatest._
 
 class JCharactersUtilsSpec extends FlatSpec with Matchers with Inspectors {
   import JCharactersUtils._
-  import LanguageDatabase._
 
   "JCharactersUtils" should "determine Hiragana correctly" in {
     isHiragana('ひ') shouldBe true

@@ -3,6 +3,7 @@ package jorders.generators
 import org.scalatest._
 
 import jentities._
+import jentities.util.Implicits.localDatabase
 
 import jorders.Constants.Fields._
 

@@ -1,11 +1,12 @@
 package jentities
 
 import jentities.util.JCharactersUtils._
+import jentities.util.LanguageDatabase
 
 /**
  * A Kanji.
  */
-case class Kanji(name: String) extends KanjiEntry {
+case class Kanji(name: String)(implicit val languageDatabase: LanguageDatabase) extends KanjiEntry {
 
   /**
    * All the readings of this kanji.

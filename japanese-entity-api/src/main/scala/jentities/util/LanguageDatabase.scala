@@ -9,10 +9,34 @@ import org.apache.commons.compress.archivers.tar._
 import org.apache.commons.compress.compressors.gzip._
 import org.apache.commons.io._
 
+trait LanguageDatabase extends LanguageDatabaseHelpers {
+
+  def edict   : PartialFunction[String, String]
+
+  def kanjidic: PartialFunction[String, Node  ]
+
+  def kradfile: PartialFunction[String, String]
+
+  def diagrams: PartialFunction[String, String]
+
+}
+
+trait LanguageDatabaseHelpers {
+
+  implicit class EnhancedPartialFunction[-A, +B](f: PartialFunction[A, B]) {
+    def get(k: A): Option[B] = if (f isDefinedAt k) Some(f(k)) else None
+  }
+
+}
+
+object Implicits {
+  implicit val localDatabase = LocalLanguageDatabase
+}
+
 /**
  * Provides convenient methods to construct various streams.
  */
-trait LanguageDatabaseAccess {
+trait LocalDatabaseAccess {
 
   /**
    * Open a file under /language-data as an input stream.
@@ -54,7 +78,7 @@ trait LanguageDatabaseAccess {
 /**
  * Language DB files access in a convenient form.
  */
-object LanguageDatabase extends LanguageDatabaseAccess {
+object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
 
   lazy val edict: Map[String, String] = withGzipIterator("edict2.gz") {_
     .drop(1)
@@ -62,20 +86,6 @@ object LanguageDatabase extends LanguageDatabaseAccess {
     .flatMap {case (k, v) => k.split(";").map(_.takeWhile(_ != '(') -> v)}  // Handling cases like 硝子体;ガラス体 - SEMICOLON!!!
     .toMap
   }
-
-  // lazy val kanjidic = kanjidic1 ++ kanjidic2
-
-  // lazy val kanjidic1: Map[String, String] = withGzipIterator("kanjidic.gz") {_
-  //   .drop(1)
-  //   .map {x => x.takeWhile(_ != ' ') -> x}
-  //   .toMap
-  // }
-
-  // lazy val kanjidic2: Map[String, String] = withGzipIterator("kanjd212.gz") {_
-  //   .drop(1)
-  //   .map {x => x.takeWhile(_ != ' ') -> x}
-  //   .toMap
-  // }
 
   lazy val kanjidic: Map[String, Node] = withGzipIterator("kanjidic2.xml.gz", "utf-8") {it =>
     val rawXml = XML loadString it.drop(323).filter(!_.startsWith("<!-- Entry")).mkString("\n")

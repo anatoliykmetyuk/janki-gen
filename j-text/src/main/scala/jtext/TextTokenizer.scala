@@ -6,6 +6,7 @@ import scala.language.implicitConversions
 import org.atilika.kuromoji._;
 
 import jentities._
+import jentities.util.LanguageDatabase
 
 object TextTokenizer {
 
@@ -23,7 +24,7 @@ object TextTokenizer {
    * Path an arbitrary Japanese text string to this method
    * and it will extract all the words from it.
    */
-  def apply(text: String): Seq[Vocabulary] = {
+  def apply(text: String)(implicit ldb: LanguageDatabase): Seq[Vocabulary] = {
     val tokenizer   = Tokenizer.builder.build()
     val refinedText = text.filter(_ != '\n')
 

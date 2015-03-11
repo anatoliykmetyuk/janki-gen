@@ -1,6 +1,7 @@
 package jorders
 
 import jentities._
+import jentities.util.LanguageDatabase
 
 import Constants._
 import generators._
@@ -18,7 +19,7 @@ object ProcessOrder {
    * @param payload a sequence of words or kanjis to be processed.
    * @param order an order.
    */
-  def apply(payload: Seq[String], order: Map[String, Any]): Map[String, Any] = {
+  def apply(payload: Seq[String], order: Map[String, Any])(implicit ldb: LanguageDatabase): Map[String, Any] = {
     val dPayload = payload.map {e =>
            if (Vocabulary(e).found) Vocabulary(e)
       else if (Kanji     (e).found) Kanji     (e)

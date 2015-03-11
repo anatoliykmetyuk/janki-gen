@@ -1,6 +1,7 @@
 package jentities
 
 import org.scalatest._
+import jentities.util.Implicits.localDatabase
 
 class EntitiesSpec extends FlatSpec with Matchers with LanguageDatabaseSpecHelpers {
 

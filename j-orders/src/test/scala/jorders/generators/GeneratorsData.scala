@@ -1,6 +1,7 @@
 package jorders.generators
 
 import jentities._
+import jentities.util.Implicits.localDatabase
 
 trait GeneratorsData {
 

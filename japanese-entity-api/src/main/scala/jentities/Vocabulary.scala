@@ -1,12 +1,14 @@
 package jentities
 
-import jentities.util.LanguageDatabase._
+import jentities.util.LanguageDatabase
 import jentities.util.JCharactersUtils._
 
 /**
  * A single Japanese word.
  */
-case class Vocabulary(name: String) extends Entity {
+case class Vocabulary(name: String)(implicit val languageDatabase: LanguageDatabase) extends Entity {
+  import languageDatabase._
+
   type DictEntryForm = String
   def vocabulary     = edict
 
