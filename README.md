@@ -22,4 +22,5 @@ JAnki uses the following projects:
 - [Kanjidic](http://kanjidic.com/)
 - [Kradfile](http://www.kanjicafe.com/kradfile_license.htm)
 - [Kanji Colorize](https://github.com/cayennes/kanji-colorize)
+
 Thank you!
