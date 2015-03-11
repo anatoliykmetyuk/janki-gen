@@ -17,8 +17,12 @@ For more information about the **programmatic usage**, see the API.
 
 Example
 =======
-You can add the library to the project as a Maven dependency as follows:
-```The library is not yet in the Maven, coming soon!```
+You can add the library to the project as an SBT dependency as follows:
+```scala
+libraryDependencies += "io.github.anki-japan" %% "jentities" % "1.0"
+libraryDependencies += "io.github.anki-japan" %% "jorders"   % "1.0"
+libraryDependencies += "io.github.anki-japan" %% "jtext"     % "1.0"
+```
 
 You can use the library as follows:
 ```scala
