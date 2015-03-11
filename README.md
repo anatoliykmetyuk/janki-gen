@@ -27,6 +27,7 @@ libraryDependencies += "io.github.anki-japan" %% "jtext"     % "1.0"
 You can use the library as follows:
 ```scala
 // Necessary imports
+import jentities.util.Implicits.localDatabase
 import jorders._
 import jorders.Constants._
 import jorders.Constants.Fields._
