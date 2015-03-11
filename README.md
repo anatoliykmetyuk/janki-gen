@@ -3,7 +3,7 @@ JAnki
 JAnki is a library to simplify learning Japanese language with [Anki SRS](http://ankisrs.net/). It provides the means to analyze Japanese entities - words, kanjis and radicals - and generate Anki flashcards from them. The library consists of the following parts:
 
  - [JEntities](http://anki-japan.github.io/jentities/index.html#jentities.package) - defines 3 model classes - [Radical](http://anki-japan.github.io/jentities/index.html#jentities.Radical), [Kanji](http://anki-japan.github.io/jentities/index.html#jentities.Kanji) and [Vocabulary](http://anki-japan.github.io/jentities/index.html#jentities.Vocabulary) - which can be used to access the properties of these entities.
- - [JOrders](http://anki-japan.github.io/jorders/index.html#jorders.ProcessOrder$) - allows you to "order" your flashcards! Also has means to serialize them into a zip archive. See [ProcessOrder](http://anki-japan.github.io/jorders/index.html#jorders.ProcessOrder$) class.
+ - [JOrders](http://anki-japan.github.io/jorders/index.html#jorders.ProcessOrder$) - allows you to "order" your flashcards! Also has means to serialize them into a zip archive.
  - [JText](http://anki-japan.github.io/jtext/index.html#jtext.TextTokenizer$) - you take an arbitrary Japanese text, provide it to the means of this library and it extracts all the vocabulary out from it. As simple as a method invocation.
 
 The **recommended approach for learning** is as follows:
