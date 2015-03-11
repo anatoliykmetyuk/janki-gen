@@ -19,7 +19,7 @@ Powered By
 ==========
 JAnki uses the following projects:
 - [Edict](http://www.edrdg.org/jmdict/edict.html)
-- [Kanjidic](http://kanjidic.com/)
+- [Kanjidic2](http://www.edrdg.org/kanjidic/kanjd2index.html)
 - [Kradfile](http://www.kanjicafe.com/kradfile_license.htm)
 - [Kanji Colorize](https://github.com/cayennes/kanji-colorize)
 
