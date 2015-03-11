@@ -15,6 +15,44 @@ The **recommended approach for learning** is as follows:
 
 For more information about the **programmatic usage**, see the API.
 
+Example
+=======
+You can use the library as follows:
+```scala
+// Necessary imports
+import jorders._
+import jorders.Constants._
+import jorders.Constants.Fields._
+import jorders.output._
+import jtext._
+
+import org.apache.commons.io.output._
+
+// Some Japanese text
+val text = "私の猫"
+
+// Creating the order
+val order = Map[String, Any](
+  RADICALS   -> s"$I $M $E $Di" 
+  KANJI      -> s"$I $M $R $E $Di"
+  VOCABULARY -> s"$I $M $R $E"
+  MEDIA      -> ""
+)
+
+// Extract the words from it.
+val payload = TextTokenizer(text).filter(_.name != null)
+
+// Execute the order
+val processed = ProcessOrder.processEntities(payload, order.toMap)
+
+// Create a ZIP file with the order results
+val byteStream = new ByteArrayOutputStream()
+ZipOutput.writeResultToStream(processed, byteStream)
+
+val result: Array[Byte] = byteStream.toByteArray
+```
+
+
 Powered By
 ==========
 JAnki uses the following projects:
