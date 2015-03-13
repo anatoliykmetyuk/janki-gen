@@ -9,8 +9,8 @@ trait Entity {
   import languageDatabase._
 
   val name      : String
-  def vocabulary: PartialFunction[String, DictEntryForm]
+  def vocabulary: String => Option[DictEntryForm]
 
-  lazy val vocabEntry: Option[DictEntryForm] = vocabulary.get(name)
+  lazy val vocabEntry: Option[DictEntryForm] = vocabulary(name)
   lazy val found = vocabEntry.isDefined
 }

@@ -12,7 +12,7 @@ trait KanjiEntry extends Entity {
 
   type DictEntryForm     = Node
   def vocabulary         = kanjidic
-  lazy val decomposition = kradfile.get(name)
+  lazy val decomposition = kradfile(name)
 
   /**
    * The meanings of this entry.
@@ -25,7 +25,7 @@ trait KanjiEntry extends Entity {
   /**
    * The stroke order diagram of this entry in the SVG format.
    */ 
-  def diagram: Option[String] = diagrams.get(name)
+  def diagram: Option[String] = diagrams(name)
 
   def utfCode: String = name.flatMap {c => (c | 0x10000).toHexString.drop(1)}
 

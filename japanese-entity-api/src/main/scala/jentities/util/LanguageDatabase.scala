@@ -11,21 +11,13 @@ import org.apache.commons.io._
 
 trait LanguageDatabase extends LanguageDatabaseHelpers {
 
-  def edict   : PartialFunction[String, String]
+  def edict   : String => Option[String]
 
-  def kanjidic: PartialFunction[String, Node  ]
+  def kanjidic: String => Option[Node]
 
-  def kradfile: PartialFunction[String, String]
+  def kradfile: String => Option[String]
 
-  def diagrams: PartialFunction[String, String]
-
-}
-
-trait LanguageDatabaseHelpers {
-
-  implicit class EnhancedPartialFunction[-A, +B](f: PartialFunction[A, B]) {
-    def get(k: A): Option[B] = if (f isDefinedAt k) Some(f(k)) else None
-  }
+  def diagrams: String => Option[String]
 
 }
 
@@ -80,32 +72,42 @@ trait LocalDatabaseAccess {
  */
 object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
 
-  lazy val edict: Map[String, String] = withGzipIterator("edict2.gz") {_
-    .drop(1)
-    .map     {x => x.takeWhile(_ != ' ') -> x}
-    .flatMap {case (k, v) => k.split(";").map(_.takeWhile(_ != '(') -> v)}  // Handling cases like 硝子体;ガラス体 - SEMICOLON!!!
-    .toMap
+  def asFunc[K](map: Map[String, K]): String => Option[K] = k => map.get(k)
+
+  lazy val edict: String => Option[String] = asFunc {
+    withGzipIterator("edict2.gz") {_
+      .drop(1)
+      .map     {x => x.takeWhile(_ != ' ') -> x}
+      .flatMap {case (k, v) => k.split(";").map(_.takeWhile(_ != '(') -> v)}  // Handling cases like 硝子体;ガラス体 - SEMICOLON!!!
+      .toMap
+    }
   }
 
-  lazy val kanjidic: Map[String, Node] = withGzipIterator("kanjidic2.xml.gz", "utf-8") {it =>
-    val rawXml = XML loadString it.drop(323).filter(!_.startsWith("<!-- Entry")).mkString("\n")
-    (rawXml \ "character").map {c => (c \ "literal").head.text -> c}.toMap
+  lazy val kanjidic: String => Option[Node] = asFunc {
+    withGzipIterator("kanjidic2.xml.gz", "utf-8") {it =>
+      val rawXml = XML loadString it.drop(323).filter(!_.startsWith("<!-- Entry")).mkString("\n")
+      (rawXml \ "character").map {c => (c \ "literal").head.text -> c}.toMap
+    }
   }
 
-  lazy val kradfile: Map[String, String] = withGzipIterator("kradfile-u.gz", "UTF-8") {_
-    .dropWhile(_.head == '#')
-    .map {x => x.takeWhile(_ != ' ') -> x}
-    .toMap
+  lazy val kradfile: String => Option[String] = asFunc {
+    withGzipIterator("kradfile-u.gz", "UTF-8") {_
+      .dropWhile(_.head == '#')
+      .map {x => x.takeWhile(_ != ' ') -> x}
+      .toMap
+    }
   }
 
-  lazy val diagrams: Map[String, String] = withTgz("colorized-kanji-contrast.tgz") {tis =>
-    tis.getNextEntry
+  lazy val diagrams: String => Option[String] = asFunc {
+    withTgz("colorized-kanji-contrast.tgz") {tis =>
+      tis.getNextEntry
 
-    var result = Map[String, String]()
-    while (tis.getNextEntry != null) result +=
-      tis.getCurrentEntry.getName.dropWhile(_ != '/').drop(1).dropRight(".svg".size) -> IOUtils.toString(tis)
+      var result = Map[String, String]()
+      while (tis.getNextEntry != null) result +=
+        tis.getCurrentEntry.getName.dropWhile(_ != '/').drop(1).dropRight(".svg".size) -> IOUtils.toString(tis)
 
-    result
+      result
+    }
   }
 
 }
