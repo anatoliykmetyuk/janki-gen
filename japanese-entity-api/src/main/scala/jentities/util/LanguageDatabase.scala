@@ -74,40 +74,36 @@ object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
 
   def asFunc[K](map: Map[String, K]): String => Option[K] = k => map.get(k)
 
-  lazy val edict: String => Option[String] = asFunc {
-    withGzipIterator("edict2.gz") {_
-      .drop(1)
-      .map     {x => x.takeWhile(_ != ' ') -> x}
-      .flatMap {case (k, v) => k.split(";").map(_.takeWhile(_ != '(') -> v)}  // Handling cases like 硝子体;ガラス体 - SEMICOLON!!!
-      .toMap
-    }
+  lazy val edictMap: Map[String, String] = withGzipIterator("edict2.gz") {_
+    .drop(1)
+    .map     {x => x.takeWhile(_ != ' ') -> x}
+    .flatMap {case (k, v) => k.split(";").map(_.takeWhile(_ != '(') -> v)}  // Handling cases like 硝子体;ガラス体 - SEMICOLON!!!
+    .toMap
   }
+  lazy val edict: String => Option[String] = asFunc(edictMap)
 
-  lazy val kanjidic: String => Option[Node] = asFunc {
-    withGzipIterator("kanjidic2.xml.gz", "utf-8") {it =>
-      val rawXml = XML loadString it.drop(323).filter(!_.startsWith("<!-- Entry")).mkString("\n")
-      (rawXml \ "character").map {c => (c \ "literal").head.text -> c}.toMap
-    }
+  lazy val kanjidicMap: Map[String, Node] = withGzipIterator("kanjidic2.xml.gz", "utf-8") {it =>
+    val rawXml = XML loadString it.drop(323).filter(!_.startsWith("<!-- Entry")).mkString("\n")
+    (rawXml \ "character").map {c => (c \ "literal").head.text -> c}.toMap
   }
+  lazy val kanjidic: String => Option[Node] = asFunc(kanjidicMap)
 
-  lazy val kradfile: String => Option[String] = asFunc {
-    withGzipIterator("kradfile-u.gz", "UTF-8") {_
-      .dropWhile(_.head == '#')
-      .map {x => x.takeWhile(_ != ' ') -> x}
-      .toMap
-    }
+  lazy val kradfileMap: Map[String, String] = withGzipIterator("kradfile-u.gz", "UTF-8") {_
+    .dropWhile(_.head == '#')
+    .map {x => x.takeWhile(_ != ' ') -> x}
+    .toMap
   }
+  lazy val kradfile: String => Option[String] = asFunc(kradfileMap)
 
-  lazy val diagrams: String => Option[String] = asFunc {
-    withTgz("colorized-kanji-contrast.tgz") {tis =>
-      tis.getNextEntry
+  lazy val diagramsMap: Map[String, String] = withTgz("colorized-kanji-contrast.tgz") {tis =>
+    tis.getNextEntry
 
-      var result = Map[String, String]()
-      while (tis.getNextEntry != null) result +=
-        tis.getCurrentEntry.getName.dropWhile(_ != '/').drop(1).dropRight(".svg".size) -> IOUtils.toString(tis)
+    var result = Map[String, String]()
+    while (tis.getNextEntry != null) result +=
+      tis.getCurrentEntry.getName.dropWhile(_ != '/').drop(1).dropRight(".svg".size) -> IOUtils.toString(tis)
 
-      result
-    }
+    result
   }
+  lazy val diagrams: String => Option[String] = asFunc(diagramsMap)
 
 }
