@@ -9,7 +9,7 @@ import org.apache.commons.compress.archivers.tar._
 import org.apache.commons.compress.compressors.gzip._
 import org.apache.commons.io._
 
-trait LanguageDatabase extends LanguageDatabaseHelpers {
+trait LanguageDatabase {
 
   def edict   : String => Option[String]
 
