@@ -9,6 +9,8 @@ import org.apache.commons.compress.archivers.tar._
 import org.apache.commons.compress.compressors.gzip._
 import org.apache.commons.io._
 
+import jentities._
+
 trait LanguageDatabase {
 
   def edict   : String => Option[String]
@@ -18,6 +20,17 @@ trait LanguageDatabase {
   def kradfile: String => Option[String]
 
   def diagrams: String => Option[String]
+
+  /**
+   * Sentences whos all words belong to the input sequence.
+   */ 
+  def sentencesExclusive: Set[String] => Seq[Sentence]
+
+  /**
+   * Sentences with at least one of the words belong to the
+   * input sequence.
+   */
+  def sentencesInclusive: Set[String] => Seq[Sentence]
 
 }
 
@@ -74,6 +87,7 @@ object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
 
   def asFunc[K](map: Map[String, K]): String => Option[K] = k => map.get(k)
 
+  // Edict
   lazy val edictMap: Map[String, String] = withGzipIterator("edict2.gz") {_
     .drop(1)
     .map     {x => x.takeWhile(_ != ' ') -> x}
@@ -82,12 +96,14 @@ object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
   }
   lazy val edict: String => Option[String] = asFunc(edictMap)
 
+  // Kanjidic
   lazy val kanjidicMap: Map[String, Node] = withGzipIterator("kanjidic2.xml.gz", "utf-8") {it =>
     val rawXml = XML loadString it.drop(323).filter(!_.startsWith("<!-- Entry")).mkString("\n")
     (rawXml \ "character").map {c => (c \ "literal").head.text -> c}.toMap
   }
   lazy val kanjidic: String => Option[Node] = asFunc(kanjidicMap)
 
+  // Kradfile
   lazy val kradfileMap: Map[String, String] = withGzipIterator("kradfile-u.gz", "UTF-8") {_
     .dropWhile(_.head == '#')
     .map {x => x.takeWhile(_ != ' ') -> x}
@@ -95,6 +111,7 @@ object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
   }
   lazy val kradfile: String => Option[String] = asFunc(kradfileMap)
 
+  // Diagrams
   lazy val diagramsMap: Map[String, String] = withTgz("colorized-kanji-contrast.tgz") {tis =>
     tis.getNextEntry
 
@@ -106,4 +123,38 @@ object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
   }
   lazy val diagrams: String => Option[String] = asFunc(diagramsMap)
 
+  // Sentences
+  lazy val sentencesMapJpn: Map[Long, (String, Seq[String])] = withGzipIterator("tatoeba/sentences.gz", "UTF-8") {_
+    .toSeq
+    .map    {_ split "\t"}
+    .filter {_(1) == "jpn"}
+    .map    {arr => arr(0).toLong -> (arr(2), if (arr.length >= 4) arr(3).split(";").toSeq else Seq[String]())}  // Id -> (sentence, words)
+    .toMap
+  }
+
+  lazy val sentencesMapEng: Map[Long, String] = withGzipIterator("tatoeba/sentences.gz", "UTF-8") {_
+    .toSeq
+    .map    {_ split "\t"}
+    .filter {_(1) == "eng"}
+    .map    {arr => arr(0).toLong -> arr(2)}
+    .toMap
+  }
+
+  lazy val linksMap: Map[Long, Seq[Long]] = withGzipIterator("tatoeba/links.gz", "UTF-8") {_
+    .toSeq
+    .map     {_.split("\t").map(_.toLong)}
+    .groupBy {_.head}
+    .map     {case (k, seq) => k -> seq.map(_(1))}
+    .toMap
+  }
+
+
+  lazy val sentencesExclusive: Set[String] => Seq[jentities.Sentence] = in => sentencesMapJpn
+    .filter  {case (_, (_, words)) => !words.isEmpty && words.forall(in)}
+    .toSeq
+    .flatMap {case (id, (sentence, _)) =>
+      linksMap(id).map {tid => Sentence(sentence, sentencesMapEng(tid))}
+    }
+
+  lazy val sentencesInclusive: Set[String] => Seq[jentities.Sentence] = ???
 }

@@ -66,11 +66,29 @@ lazy val jentities = (project in file("japanese-entity-api"))
     .settings(
       name := "jentities",
 
+      fork in console := true,
+      javaOptions in console += "-Xmx2G",
+
       initialCommands := """
         |import jentities._
-        |import jentities.util.LanguageDatabase._
-        |val kanjidic2file = "/Users/anatolii/Projects/janki-gen/japanese-entity-api/src/main/resources/language-data/kanjidic2.xml"
+        |import java.io._
+        |import org.apache.commons.io._
+        |import scala.collection.JavaConversions._
+        |import org.atilika.kuromoji._
+        |import jentities.util.Implicits.localDatabase._
+        |
+        |val base          = new File("/Users/anatolii/Downloads")
+        |val sentencesFile = new File(base, "sentences.csv")
+        |val linksFile     = new File(base, "links.csv")
+        |
+        |val vfSents = new File(base, "tSent.csv")
+        |val vfLinks = new File(base, "vLinks.csv")
       """.stripMargin,
+
+      // TEMP
+      resolvers += "Atilika Open Source repository" at "http://www.atilika.org/nexus/content/repositories/atilika",
+      libraryDependencies += "org.atilika.kuromoji" % "kuromoji" % "0.7.7",
+      // TEMP
 
       libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"
     )
