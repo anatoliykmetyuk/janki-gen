@@ -43,8 +43,8 @@ object Constants {
    */
   val EXCLUDE    = "exclude"
 
-  val SENTENCES_EXCLUSIVE  = "sentences_exclusive"
-  val SENTENCES_INCLUSIVE  = "sentences_inclusive"
+  val SENTENCES_EXCLUSIVE  = "sentences_exclusive.txt"
+  val SENTENCES_INCLUSIVE  = "sentences_inclusive.txt"
 
   /**
    * Variables to specify what fields should the ordered cards contain.
