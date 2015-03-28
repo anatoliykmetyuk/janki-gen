@@ -27,7 +27,7 @@ trait NoteGenerator extends Generator[Seq[String]] {
       .filter(_.found)
       .flatMap       (extract(_, exclude))
       .distinct.diff (exclude)  // Same operation twice, to prevent transitive elements of the excluded elements from generation
-      .filter(_.found)
+      .filter        (_.found)
       .map           {processOne(_, orderDetails.split(" "))}
 
   /**

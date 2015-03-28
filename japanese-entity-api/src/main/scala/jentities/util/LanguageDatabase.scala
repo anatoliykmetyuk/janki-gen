@@ -149,12 +149,16 @@ object LocalLanguageDatabase extends LanguageDatabase with LocalDatabaseAccess {
   }
 
 
-  lazy val sentencesExclusive: Set[String] => Seq[jentities.Sentence] = in => sentencesMapJpn
-    .filter  {case (_, (_, words)) => !words.isEmpty && words.forall(in)}
-    .toSeq
-    .flatMap {case (id, (sentence, _)) =>
+  def sentencesSubset(predicate: Seq[String] => Boolean): Seq[jentities.Sentence] = sentencesMapJpn
+    .filter  {case (_, (_, words)) => predicate(words)}  // Filter according to predicate
+    .toSeq                                               // Materialize
+    .flatMap {case (id, (sentence, _)) =>                // Translate
       linksMap(id).map {tid => Sentence(sentence, sentencesMapEng(tid))}
     }
 
-  lazy val sentencesInclusive: Set[String] => Seq[jentities.Sentence] = ???
+  lazy val sentencesExclusive: Set[String] => Seq[jentities.Sentence] =
+    in => sentencesSubset {words => !words.isEmpty && words.forall(in)}
+
+  lazy val sentencesInclusive: Set[String] => Seq[jentities.Sentence] =
+    in => sentencesSubset {words => !words.isEmpty && words.exists(in)}
 }

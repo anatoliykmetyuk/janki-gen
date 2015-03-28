@@ -33,14 +33,16 @@ object ProcessOrder {
    * @param payload a sequence of entities to be processed.
    * @param order an order.
    */
-  def processEntities(payload: Seq[Entity], order: Map[String, Any]): Map[String, Any] = {
+  def processEntities(payload: Seq[Entity], order: Map[String, Any])(implicit ldb: LanguageDatabase): Map[String, Any] = {
     var result = Map[String, Any]()
 
     val noteGenerators = Map(
-      VOCABULARY -> VocabularyGenerator,
-      KANJI      -> KanjiGenerator,
-      RADICALS   -> RadicalsGenerator,
-      MEDIA      -> MediaGenerator
+      VOCABULARY           -> VocabularyGenerator,
+      KANJI                -> KanjiGenerator,
+      RADICALS             -> RadicalsGenerator,
+      MEDIA                -> MediaGenerator,
+      SENTENCES_EXCLUSIVE  -> new SentenceGeneratorExclusive(ldb),
+      SENTENCES_INCLUSIVE  -> new SentenceGeneratorInclusive(ldb)
     )
     def generateOrder(key: String) = if (noteGenerators contains key)
       result += key -> noteGenerators(key).generate (

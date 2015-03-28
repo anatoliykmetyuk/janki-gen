@@ -43,6 +43,9 @@ object Constants {
    */
   val EXCLUDE    = "exclude"
 
+  val SENTENCES_EXCLUSIVE  = "sentences_exclusive"
+  val SENTENCES_INCLUSIVE  = "sentences_inclusive"
+
   /**
    * Variables to specify what fields should the ordered cards contain.
    */
@@ -61,6 +64,9 @@ object Constants {
 
     /** Diagram file HTML code */
     val Di = "di"
+
+    /** Count of the results required */
+    val C = "c"
   }
 
 }

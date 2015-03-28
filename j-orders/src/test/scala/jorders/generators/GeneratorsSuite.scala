@@ -53,4 +53,19 @@ class GeneratorsSuite extends FlatSpec with Matchers with GeneratorsData {
     VocabularyGenerator.generate(sampleVocab, s"$I $M $R $E", Seq(Vocabulary("硬変"))) should not contain ("硬変\t(n,vs) cirrhosis\tこうへん\t硬変")
   }
 
+  "Exclusive Sentence Generator" should "work" in {
+    val g = new SentenceGeneratorExclusive(localDatabase)
+    g.generate(sentencesSeed, "", Nil) should contain ("好きにしろよ。\tSuit yourself.")
+  }
+
+  it should "support \"count\" modifier" in {
+    val g = new SentenceGeneratorExclusive(localDatabase)
+    g.generate(sentencesSeed, s"$C=5", Nil).size shouldBe 5
+  }
+
+  "Inclusive Sentence Generator" should "work" in {
+    val g = new SentenceGeneratorInclusive(localDatabase)
+    g.generate(sentencesSeed, "", Nil).size shouldBe 45050
+  }
+
 }
