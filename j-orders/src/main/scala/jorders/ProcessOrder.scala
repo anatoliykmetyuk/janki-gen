@@ -69,7 +69,8 @@ object Sample {
     MEDIA      -> "",
     EXCLUDE    -> List(
       // Kanji("女")
-    )
+    ),
+    SENTENCES_EXCLUSIVE -> s"$C=100"
   )
 
   val words = Seq(
